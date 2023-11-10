@@ -17,7 +17,7 @@ public class InterviewQuestion {
 
         WebDriver driver = DriverFactory.getDriver();
 
-    /*  Cach 1:
+         /*  Cach 1:
         driver.get(TARGET_URL);
         Exception exception = null;
         try {
@@ -26,18 +26,18 @@ public class InterviewQuestion {
             exception = e;
         }
         if (exception == null) {
-      //      Assert.fail("The element ABC is not on the page");
+         Assert.fail("The element ABC is not on the page");
         }*/
+
         // Cach 2
         List<WebElement> usernameElements = driver.findElements(USERNAMESELECTOR);
         if (!usernameElements.isEmpty()) {
-    //        Assert.fail("The element ABC is not on the page");
+            // Assert.fail("The element is not on the page");
         }
 
         /*
          * Not existing on the page
          */
-
 
     }
 }

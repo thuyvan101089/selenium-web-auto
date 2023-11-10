@@ -38,12 +38,5 @@ public class FormInteraction {
         } finally {
             driver.quit();
         }
-
-        /*
-        * Not existing on the page
-        *
-        *
-        * */
-
     }
 }
