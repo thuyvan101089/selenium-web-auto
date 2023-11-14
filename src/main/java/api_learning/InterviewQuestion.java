@@ -26,13 +26,13 @@ public class InterviewQuestion {
             exception = e;
         }
         if (exception == null) {
-         Assert.fail("The element ABC is not on the page");
+         Assert.fail("The element ABC is git on the page");
         }*/
 
         // Cach 2
         List<WebElement> usernameElements = driver.findElements(USERNAMESELECTOR);
         if (!usernameElements.isEmpty()) {
-            // Assert.fail("The element is not on the page");
+            // Assert.fail("The element is on the page");
         }
 
         /*
