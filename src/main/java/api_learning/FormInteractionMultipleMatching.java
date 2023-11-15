@@ -20,12 +20,12 @@ public class FormInteractionMultipleMatching {
 
         try {
             List<WebElement> loginFieldEles = driver.findElements(LOGIN_INPUT_FIELD_SEL);
-            if(!loginFieldEles.isEmpty()){
+            if (!loginFieldEles.isEmpty()) {
                 final int USERNAME_INDEX = 0;
                 final int PASSWORD_INDEX = 1;
                 loginFieldEles.get(USERNAME_INDEX).sendKeys("van");
                 loginFieldEles.get(PASSWORD_INDEX).sendKeys("van");
-            }else {
+            } else {
                 throw new NoSuchElementException("No log input field element found ");
             }
             driver.findElement(LOGIN_BUTTON_SELECTOR).click();
