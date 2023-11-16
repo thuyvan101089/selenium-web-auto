@@ -30,14 +30,5 @@ public class IframeInteraction {
         }
     }
 
-    private static void debugWait() {
-        try {
-            Thread.sleep(1500);
-        } catch (Exception ignored) {
-
-        }
-
-    }
-
 
 }
