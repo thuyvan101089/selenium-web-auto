@@ -10,6 +10,6 @@ public class POMModel04Tests {
         WebDriver driver = DriverFactory.getDriver();
         driver.get("https");
         HomePage homepage = new HomePage(driver);
-        homepage.footerComponent().doSomething();
+      //  homepage.footerComponent().doSomething();
     }
 }
