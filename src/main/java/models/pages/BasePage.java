@@ -16,4 +16,5 @@ public class BasePage extends Component {
     public FooterComponent footerComponent() {
         return findComponent(FooterComponent.class);
     }
+
 }

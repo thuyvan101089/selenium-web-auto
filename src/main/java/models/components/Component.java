@@ -23,6 +23,13 @@ public class Component {
         this.component = component;
         this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(15));
     }
+    public WebElement getComponent(){
+        return this.component;
+    }
+
+    public WebDriverWait componentWait(){
+        return this.wait;
+    }
 
     // Narrow down searching scope
     public WebElement findElement(By by) {
