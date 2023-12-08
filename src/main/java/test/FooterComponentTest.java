@@ -16,7 +16,7 @@ public class FooterComponentTest {
 
         try {
             HomePage homePage = new HomePage(driver);
-            FooterComponent footerComponent = homePage.footerComponent();
+            FooterComponent footerComponent = homePage.footerComp();
             InformationColumnComponent informationColumnComponent = footerComponent.informationColumnComp();
             CustomerServiceColumnComponent customerServiceColumnComponent = footerComponent.customerServiceColumnComp();
             testFooterComponent(informationColumnComponent);
