@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import support.ui.ExpectedConditionsEx;
 
 import java.lang.reflect.Constructor;
 import java.time.Duration;
@@ -55,7 +56,7 @@ public class Component {
         } catch (Exception e) {
             throw new IllegalArgumentException("[ERROR] This component must have annotation for CSS, Id...");
         }
-        List<WebElement> results = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(componentSelector));
+        List<WebElement> results = wait.until(ExpectedConditionsEx.presenceOfAllElementsLocatedBy(this.component,componentSelector));
 
         //Define Component Constructor
         Class<?>[] params = new Class[]{WebDriver.class, WebElement.class};
