@@ -11,7 +11,7 @@ public class testGson {
 
 
     public static void testDataArray() {
-        String relativeFileLocation = "/src/main/java/test_data/data.json";
+        String relativeFileLocation = "/src/main/java/test_data/CheapComputerDataList.json";
         ComputerData[] computerData = DataObjectBuilder.buildDataObjectFrom(relativeFileLocation, ComputerData[].class);
         for (ComputerData computerData1 : computerData) {
             System.out.println(computerData1.getProcessor());
@@ -25,7 +25,7 @@ public class testGson {
     }
 
     public static void testBuilderMethod() {
-        String relativeFileLocation = "/src/main/java/test_data/data.json";
+        String relativeFileLocation = "/src/main/java/test_data/CheapComputerDataList.json";
         ComputerData computerData = DataObjectBuilder.buildDataObjectFrom(relativeFileLocation, ComputerData.class);
         System.out.println(computerData);
         System.out.println(computerData.getProcessor());

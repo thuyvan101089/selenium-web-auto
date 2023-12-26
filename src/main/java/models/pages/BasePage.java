@@ -2,6 +2,7 @@ package models.pages;
 
 import models.components.Component;
 import models.components.global.footer.FooterComponent;
+import models.components.global.footer.HeaderComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import models.components.global.header.CategoryItemComponent;
@@ -20,7 +21,9 @@ public class BasePage extends Component {
         return findComponent(FooterComponent.class);
     }
 
-
+    public HeaderComponent headerComp() {
+        return findComponent(HeaderComponent.class);
+    }
     public List<CategoryItemComponent> categoryItemComponents() {
         return findComponents(CategoryItemComponent.class);
 

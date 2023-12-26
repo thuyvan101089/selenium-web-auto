@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public abstract class ComputerEssentialComponent extends BaseItemComponent {
-    private final static By ALLOPTIONSSELECTOR = By.cssSelector("option-list input");
+    private final static By ALLOPTIONSSELECTOR = By.cssSelector(".option-list input");
 
     public ComputerEssentialComponent(WebDriver driver, WebElement component) {
         super(driver, component);
@@ -15,15 +15,18 @@ public abstract class ComputerEssentialComponent extends BaseItemComponent {
 
     public abstract String selectRAMType(String type);
 
-    public String selectHDD (String type){
+    public String selectHDD(String type) {
         return selectCompStr(type);
     }
-    public String selectOs (String type){
+
+    public String selectOs(String type) {
         return selectCompStr(type);
     }
-    public String selectSoftware (String type){
+
+    public String selectSoftware(String type) {
         return selectCompStr(type);
     }
+
     public void unselectDefaultOption() {
         component.findElements(ALLOPTIONSSELECTOR).forEach(option -> {
             if (option.getAttribute("checked") != null) {
@@ -34,7 +37,7 @@ public abstract class ComputerEssentialComponent extends BaseItemComponent {
     }
 
     protected String selectCompStr(String type) {
-        String selectorStr = "//label[contains(text(),'+ type +')]";
+        String selectorStr = "//label[contains(text(),"+ "\"" + type +"\""+")]";
         By optionSelector = By.xpath(selectorStr);
         WebElement optionElement = null;
         try {
@@ -45,6 +48,7 @@ public abstract class ComputerEssentialComponent extends BaseItemComponent {
         if (optionElement == null) {
             throw new RuntimeException("[ERROR] The option " + type + "is not existing");
         }
+        optionElement.click();
         return optionElement.getText().trim();
 
     }
