@@ -4,7 +4,7 @@ import models.components.order.StandardComputerComponent;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import test.BaseTest;
-import test_data.ComputerData;
+import test_data.computer.ComputerData;
 import test_data.DataObjectBuilder;
 import test_flows.computer.OrderComputerFlow;
 
@@ -20,11 +20,13 @@ public class BuyStandardComputerTest extends BaseTest {
         orderComputerFlow.buildCompSpec();
         orderComputerFlow.addItemToCart();
         orderComputerFlow.verifyShoppingCartPage();
+        orderComputerFlow.agreeTermsAndCheckout();
+        orderComputerFlow.inputBillingAddress();
     }
 
     @DataProvider
     public ComputerData[] computerData() {
-        String relativeFileLocation = "/src/main/java/test_data/StandardComputerDataList.json";
+        String relativeFileLocation = "/src/main/java/test_data/computer/StandardComputerDataList.json";
         return DataObjectBuilder.buildDataObjectFrom(relativeFileLocation, ComputerData[].class);
 
     }

@@ -1,0 +1,12 @@
+{
+  "firstName": "Van",
+  "lastName":  "Nguyen",
+  "email": "van@abc.com",
+  "add1": "Address 01",
+  "add2": "Address 02",
+  "county": "United States",
+  "state": "Alaska",
+  "city": "City",
+  "zipcode": "1234",
+  "phoneNumber": "0123456789"
+}

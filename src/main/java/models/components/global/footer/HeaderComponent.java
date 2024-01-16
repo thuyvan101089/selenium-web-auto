@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import support.ui.Scroll;
 
 @ComponentCSSSelector(value = ".header")
 public class HeaderComponent extends Component {
@@ -17,10 +18,13 @@ public class HeaderComponent extends Component {
         super(driver, component);
     }
 
-    public void clickOnShoppingCartLink(){
-        WebElement shoppingCartLinkEle = findElement(shoppingCartLinkSel);
+    public void clickOnShoppingCartLink() {
+    /*  WebElement shoppingCartLinkEle = findElement(shoppingCartLinkSel);
         Actions actions = new Actions(driver);
         actions.moveToElement(shoppingCartLinkEle).click().build().perform();
+        */
+        Scroll.toTop(driver);
+        findElement(shoppingCartLinkSel).click();
 
     }
 }
