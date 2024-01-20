@@ -2,7 +2,7 @@ package test_flows.computer;
 
 import models.components.cart.CartItemRowComponent;
 import models.components.cart.TotalComponent;
-import models.components.checkout.BillingAddressComponent;
+import models.components.checkout.*;
 import models.components.order.ComputerEssentialComponent;
 import models.pages.CheckOutOptionPage;
 import models.pages.CheckOutPage;
@@ -10,12 +10,14 @@ import models.pages.ComputerItemDetailPage;
 import models.pages.ShoppingCartPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import test_data.CreditCardType;
 import test_data.DataObjectBuilder;
+import test_data.PaymentMethod;
 import test_data.computer.ComputerData;
 import test_data.user.UserDataObject;
 
-import java.util.List;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,8 @@ public class OrderComputerFlow<T extends ComputerEssentialComponent> {
     private double itemTotalPrice;
     private int quantity;
     private UserDataObject defaultCheckOutUser;
+    private PaymentMethod paymentMethod;
+    private CreditCardType creditCardType;
 
     public OrderComputerFlow(WebDriver driver, Class<T> computerEssentialCompClass, ComputerData computerData) {
         this.computerEssentialCompClass = computerEssentialCompClass;
@@ -117,9 +121,9 @@ public class OrderComputerFlow<T extends ComputerEssentialComponent> {
         Assert.assertEquals(checkoutTotal, (checkoutSubTotal + checkoutOtherFee), "[ERROR]: Checkout Total is incorrect");
     }
 
-    public void agreeTermsAndCheckout(){
+    public void agreeTermsAndCheckout() {
         ShoppingCartPage shoppingCartPage = new ShoppingCartPage(driver);
-        TotalComponent totalComponent= shoppingCartPage.totalComponent();
+        TotalComponent totalComponent = shoppingCartPage.totalComponent();
         totalComponent.agreeTermService();
         totalComponent.clickOnCheckoutButton();
         // Exception case/. Normally, do not use one flow method for more than one page
@@ -127,7 +131,7 @@ public class OrderComputerFlow<T extends ComputerEssentialComponent> {
 
     }
 
-    public void inputBillingAddress(){
+    public void inputBillingAddress() {
         String defaultCheckOutUserDataLoc = "/src/main/java/test_data/user/CheckOutDefaultUser.json";
         this.defaultCheckOutUser = DataObjectBuilder.buildDataObjectFrom(defaultCheckOutUserDataLoc, UserDataObject.class);
         CheckOutPage checkOutPage = new CheckOutPage(driver);
@@ -144,6 +148,81 @@ public class OrderComputerFlow<T extends ComputerEssentialComponent> {
         billingAddressComp.inputPhoneNumber(defaultCheckOutUser.getPhoneNumber());
         billingAddressComp.clickContinueBtn();
 
+    }
+
+    public void inputShippingAddress() {
+        new CheckOutPage(driver).shippingAddressComp().clickOnContinueBtn();
+    }
+
+    public void selectShippingMethod() {
+        List<String> shippingMethods = Arrays.asList("Ground", "Next Day Air", "2nd Day Air");
+        int randomShoppingMethodIndex = new SecureRandom().nextInt(shippingMethods.size());
+        String randomShoppingMethod = shippingMethods.get(randomShoppingMethodIndex);
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
+        ShippingMethodComponent shippingMethodComp = checkOutPage.shippingMethodComp();
+        shippingMethodComp.selectShippingMethod(randomShoppingMethod);
+        shippingMethodComp.clickOnContinueBtn();
+    }
+
+    public void selectPaymentMethod() {
+        this.paymentMethod = PaymentMethod.COD;
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
+        PaymentMethodComponent paymentMethodComp = checkOutPage.paymentMethodComp();
+        paymentMethodComp.selectCODMethod();
+    }
+
+    public void selectPaymentMethod(PaymentMethod paymentMethod) {
+        Assert.assertNotNull(paymentMethod, "[ERROR]: Payment method cannot be NULL");
+        this.paymentMethod = paymentMethod;
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
+        PaymentMethodComponent paymentMethodComp = checkOutPage.paymentMethodComp();
+        switch (paymentMethod) {
+            case CHECK_MONEY_ORDER:
+                paymentMethodComp.selectMoneyOrderMethod();
+                break;
+            case CREDIT_CARD:
+                paymentMethodComp.selectCreditCardMethod();
+                break;
+            case PURCHASE_ORDER:
+                paymentMethodComp.selectPurchaseOrderMethod();
+            default:
+                paymentMethodComp.selectCODMethod();
+
+        }
+        paymentMethodComp.clickOnContinueBtn();
+
+    }
+
+    public void inputPaymentInfo(CreditCardType creditCardType) {
+        this.creditCardType = creditCardType;
+        CheckOutPage checkOutPage = new CheckOutPage(driver);
+        PaymentInformationComponent paymentInformationComp = checkOutPage.paymentInfomationComp();
+        if (this.paymentMethod.equals(PaymentMethod.PURCHASE_ORDER)) {
+            paymentInformationComp.inputPurchaseOderNumber("123456");
+        } else if (this.paymentMethod.equals(PaymentMethod.CREDIT_CARD)) {
+            paymentInformationComp.selectCardType(creditCardType);
+            String cardHolderFirstName = this.defaultCheckOutUser.getFirstName();
+            String cardHolderLastName = this.defaultCheckOutUser.getLastName();
+            paymentInformationComp.inputCardHolderName(cardHolderFirstName + " " + cardHolderLastName);
+            String cardNumber = creditCardType.equals(CreditCardType.VISA) ? "4012888888881881" : "6011000990139424";
+            paymentInformationComp.inputCardNumber(cardNumber);
+            Calendar calendar = new GregorianCalendar();
+            int expiredMonthNum = calendar.get(Calendar.MONTH) + 1;
+            String expiredMonthString = expiredMonthNum < 10 ? "0" + expiredMonthNum : String.valueOf(expiredMonthNum);
+            paymentInformationComp.inputExpiredMonth(expiredMonthString);
+            paymentInformationComp.inputExpiredYear(String.valueOf(calendar.get(Calendar.YEAR) + 1));
+            paymentInformationComp.inputCardCode("123");
+            paymentInformationComp.clickOnContinueBtn();
+        } else if (this.paymentMethod.equals(PaymentMethod.COD)) {
+            // Verify text = You will pay by COD
+        } else {
+            //Verify Text = Mail Personal or Business Check, Cashier's Check or money order to:
+        }
+
+    }
+
+    public void confirmOrder() {
+        new CheckOutPage(driver).confirmOrderComp().clickOnConfirmBtn();
     }
 
     public double extractAdditionalPrice(String optionStr) {
