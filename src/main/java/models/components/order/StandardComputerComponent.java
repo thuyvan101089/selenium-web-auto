@@ -1,5 +1,6 @@
 package models.components.order;
 
+import io.qameta.allure.Step;
 import models.components.ComponentCSSSelector;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,23 +12,28 @@ import java.util.List;
 @ComponentCSSSelector(".product-essential")
 public class StandardComputerComponent extends ComputerEssentialComponent {
     private static final By PRODUCTATTRSELECTOR = By.cssSelector("select[name^='product_attribute']");
+
     public StandardComputerComponent(WebDriver driver, WebElement component) {
         super(driver, component);
     }
 
     @Override
+    @Step("Select Processor Type {type}")
     public String selectProcessorType(String type) {
         final int PROCESSOR_DROPDOWN_INDEX = 0;
         WebElement dropdownProcessorEle = component.findElements(PRODUCTATTRSELECTOR).get(PROCESSOR_DROPDOWN_INDEX);
-        return selectOption(dropdownProcessorEle,type);
+        return selectOption(dropdownProcessorEle, type);
     }
 
     @Override
+    @Step("Select RAM Type {type}")
     public String selectRAMType(String type) {
         final int RAM_DROPDOWN_INDEX = 1;
         WebElement dropdownRAMEle = component.findElements(PRODUCTATTRSELECTOR).get(RAM_DROPDOWN_INDEX);
-        return selectOption(dropdownRAMEle,type);
+        return selectOption(dropdownRAMEle, type);
     }
+
+    @Step("Select Option")
 
     private String selectOption(WebElement dropdownEle, String type) {
         SelectEx selectEx = new SelectEx(dropdownEle);

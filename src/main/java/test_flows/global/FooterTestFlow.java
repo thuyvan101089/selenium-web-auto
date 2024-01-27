@@ -23,6 +23,7 @@ public class FooterTestFlow {
     }
 
     public void verifyFooterComponent() {
+        Assert.fail("Check case Failed with report");
         BasePage basePage = new BasePage(this.driver);
         InformationColumnComponent informationColumnComp = basePage.footerComp().informationColumnComp();
         CustomerServiceColumnComponent customerServiceColumnComp = basePage.footerComp().customerServiceColumnComp();
